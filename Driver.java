@@ -1,16 +1,50 @@
+import java.io.FileNotFoundException;
+import java.io.File;
 public class Driver{
 	public static void main(String[] args){
-		Polynomial p = new Polynomial();
-		System.out.println(p.evaluate(3));
-		double []c1 = {6,0,0,5};
-		Polynomial p1 = new Polynomial(c1);
-		double []c2 = {0,-2,0,0,-9};
-		Polynomial p2 = new Polynomial(c2);
-		Polynomial s = p1.add(p2);
-		System.out.println("s(0.1) = " + s.evaluate(0.1));
-		if(s.hasRoot(1))
-			System.out.println("1 is a root of s");
-		else
-			System.out.println("1 is not a root of s");
+		Polynomial p_zero = new Polynomial();
+		p_zero.check();
+		System.out.println("p_zero(8) = 0 : " +(p_zero.evaluate(8) == 0));
+		System.out.println(p_zero.hasRoot(8));
+		double[] coef0 = {-7,-6,1,1.3};
+		int[] int0 = {1,8,0,2};
+		Polynomial pp = new Polynomial(coef0,int0);
+		pp.check();
+		pp.evaluate(8.2);
+		double [] cof1 = {-7,13.1,101.3,-2.9};
+		int [] int1 = {3,2,8,5};
+		Polynomial p2 = new Polynomial(cof1,int1);
+		Polynomial p3 = pp.add(p2);
+		double[] cof11 = {-7,-7,14.4, 1,95.3,-2.9};
+		int [] int11 = {1,3,2,0,8,5};
+		Polynomial p33 = new Polynomial(cof11, int11);
+		System.out.println("p3 == p33 : " + (p3.isContain(p33) && p33.isContain(p3)));
+		p3.saveToFile("Checking.txt");
+		File myobj = new File("Checking.txt");
+		Polynomial p4 = new Polynomial(myobj);
+		p4.check();
+		Polynomial px = p_zero.add(pp);
+		System.out.println("px == pp " + (px.isContain(pp) && pp.isContain(px)));
+		Polynomial p5 = p_zero.multiply(pp);
+		p5.check();
+		System.out.println("p5 == p_zero " + (p5.isContain(p_zero) && p_zero.isContain(p5))); 
+		Polynomial p6 = pp.multiply(p2);
+		double [] c3 = {-607.8, 17.4,42,53.09,-709.1,101.3,-3.77,20.3,-12,66.03,-98.7,13.1};
+		int [] i3 = {16,13,11,10,9,8,7,6,5,4,3,2};
+		p6.check();
+		Polynomial man_mult = new Polynomial(c3,i3);
+		System.out.println("p6 == man_mult : " + (p6.isContain(man_mult) && man_mult.isContain(p6)));
+		System.out.println(p6.hasRoot(0));
+		System.out.println(p6.hasRoot(1));
+		System.out.println(p6.evaluate(0.146863));
+		p6.saveToFile("p6.txt");
+		File op = new File("p6.txt");
+		Polynomial p66 = new Polynomial(op);
+		System.out.println("Check p6 = p66 : " + (p6.isContain(p66) && p66.isContain(p6)));
+		int [] se = {7};
+		double [] sc = {-9};
+		Polynomial single = new Polynomial(sc,se);
+		System.out.println("single[3] = -19683 " + (single.evaluate(3) == -19683));
+		System.out.println("single[-2] = 1152 " + (single.evaluate(-2) == 1152));
 	}
 }
