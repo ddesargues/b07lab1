@@ -18,7 +18,11 @@ public class Driver{
 		double[] cof11 = {-7,-7,14.4, 1,95.3,-2.9};
 		int [] int11 = {1,3,2,0,8,5};
 		Polynomial p33 = new Polynomial(cof11, int11);
+		System.out.println("Ads : /////////////////////");
+		p3.check();
+		p33.check();
 		System.out.println("p3 == p33 : " + (p3.isContain(p33) && p33.isContain(p3)));
+		System.out.println("Ads : /////////////////");
 		p3.saveToFile("Checking.txt");
 		File myobj = new File("Checking.txt");
 		Polynomial p4 = new Polynomial(myobj);
@@ -46,5 +50,14 @@ public class Driver{
 		Polynomial single = new Polynomial(sc,se);
 		System.out.println("single[3] = -19683 " + (single.evaluate(3) == -19683));
 		System.out.println("single[-2] = 1152 " + (single.evaluate(-2) == 1152));
+		System.out.println("Checking for cancelling : ///////////////");
+		int [] ee1 = {3,0,9,5,11};
+		double [] cc1 = {-8,5,13,1,-7};
+		int [] ee2 = {3,0,9,5,11};
+		double [] cc2 = {8,-5,-13,-1,7};
+		Polynomial pp1 = new Polynomial(cc1,ee1);
+		Polynomial pp2 = new Polynomial(cc2,ee2);
+		Polynomial pp3 = pp1.add(pp2);
+		pp3.check();
 	}
 }

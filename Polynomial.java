@@ -12,10 +12,8 @@ public class Polynomial{
 	int[] exps;
 
 	public Polynomial(){
-		int[] nexp = {};
-		double[] ncop = {};
-		coeff = ncop;
-		exps = nexp;
+		coeff = null;
+		exps = null;
 	}
 
 	public Polynomial(double [] ccoeff, int [] eexps){
@@ -145,65 +143,99 @@ public class Polynomial{
 			exps = nexp;
 			obj.close();
 			} 
-	}
-	catch(FileNotFoundException e){
+		}
+		catch(FileNotFoundException e){
 			e.printStackTrace();
 		}
 
 	}
 	public void check(){
 		System.out.println("Coefficients : ");
-		for(int i =0; i < coeff.length; i++){
-			System.out.println(coeff[i]);
+		if(coeff == null){
+			System.out.println("null");
+		}
+		else{
+			for(int i =0; i < coeff.length; i++){
+				System.out.println(coeff[i]);
+			}
 		}
 		System.out.println("Exponents : ");
-		for(int i =0; i < exps.length; i++){
-			System.out.println(exps[i]);
+		if(exps == null){
+			System.out.println("null");
+		}
+		else{
+			for(int i =0; i < exps.length; i++){
+				System.out.println(exps[i]);
+			}
 		}
 	}
 
 	public Polynomial add(Polynomial arr){
-		HashMap<Integer, Double> npol = new HashMap<>();
-		for(int i =0; i < arr.exps.length; i++){
-			npol.put(arr.exps[i], arr.coeff[i]);
+		if(arr.exps == null && exps == null){
+			Polynomial nnew = new Polynomial();
+			return nnew;
 		}
-		for(int j =0; j< exps.length;j++){
-			if(npol.containsKey(exps[j])){
-				double temp = npol.get(exps[j]);
-				double he = temp+coeff[j];
-				if(he != 0){
-					npol.put(exps[j], temp+coeff[j]);
-				}
-				else{
-					npol.remove(exps[j]);
-				}
-			}
-			else{
-				npol.put(exps[j],coeff[j]);
-			}
+		else if(arr.exps == null && exps != null){
+			int [] e1 = exps;
+			double [] c1 = coeff;
+			Polynomial p1 = new Polynomial(c1,e1);
+			return p1;
 		}
-		int len = npol.size();
-		Polynomial Poly;
-		if(len != 0){
-			int[] nexp = new int[len];
-			double[] ncof = new double[len];
-			int ind =0;
-			for (int tkey : npol.keySet()){
-				if(npol.get(tkey) != 0){
-					nexp[ind] = tkey;
-					ncof[ind] = npol.get(tkey);
-				}
-				ind += 1;
-			}
-			Poly = new Polynomial(ncof, nexp);
+		else if(arr.exps != null && exps == null){
+			int [] e2 = arr.exps;
+			double [] c2 = arr.coeff;
+			Polynomial p2 = new Polynomial(c2,e2);
+			return p2;
 		}
 		else{
-			Poly = new Polynomial();
+			HashMap<Integer, Double> npol = new HashMap<>();
+			for(int i =0; i < arr.exps.length; i++){
+				npol.put(arr.exps[i], arr.coeff[i]);
+			}
+			for(int j =0; j< exps.length;j++){
+				if(npol.containsKey(exps[j])){
+					double temp = npol.get(exps[j]);
+					double he = temp+coeff[j];
+					if(he != 0){
+						npol.put(exps[j], temp+coeff[j]);
+					}
+					else{
+						npol.remove(exps[j]);
+					}
+				}
+				else{
+					npol.put(exps[j],coeff[j]);
+				}
+			}
+			int len = npol.size();
+			Polynomial Poly;
+			if(len != 0){
+				int[] nexp = new int[len];
+				double[] ncof = new double[len];
+				int ind =0;
+				for (int tkey : npol.keySet()){
+					if(npol.get(tkey) != 0){
+						nexp[ind] = tkey;
+						ncof[ind] = npol.get(tkey);
+					}
+					ind += 1;
+				}
+				Poly = new Polynomial(ncof, nexp);
+			}
+			else{
+				Poly = new Polynomial();
+			}
+			return Poly; 
 		}
-		return Poly; 
 	}
 
 	public boolean isContain(Polynomial pp){
+		if(exps == null){
+			return true;
+		}
+		else if(pp.exps == null){
+			return false;
+		}
 		HashMap<Integer, Double> npol = new HashMap<>();
 		for(int i = 0; i < exps.length; i++){
 			npol.put(exps[i], coeff[i]);
@@ -249,17 +281,23 @@ public class Polynomial{
 
 	public double evaluate(double x){
 		double total = 0;
-		for(int i = 0; i<coeff.length; i++){
-			double start = coeff[i];
-			for(int j = 0; j<exps[i];j++){
-				start *= x;
+		if(exps != null){
+			for(int i = 0; i<coeff.length; i++){
+				double start = coeff[i];
+				for(int j = 0; j<exps[i];j++){
+					start *= x;
+				}
+				total += start;
 			}
-			total += start;
 		}
 		return total;
 	}
 	
 	public Polynomial multiply(Polynomial pol){
+		if(exps == null || pol.exps == null){
+			Polynomial px = new Polynomial();
+			return px;
+		}
 		Polynomial np = new Polynomial();
 		for(int i = 0; i < pol.exps.length; i++){
 			int [] nexp = new int [exps.length];
